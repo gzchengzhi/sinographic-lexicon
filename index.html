@@ -59,7 +59,6 @@
             min-height: 700px;
         }
         
-        /* 侧边栏样式 */
         .sidebar {
             width: 300px;
             background: var(--light);
@@ -156,7 +155,6 @@
             background: #c0392b;
         }
         
-        /* 主内容区样式 */
         .content-area {
             flex: 1;
             padding: 25px;
@@ -195,7 +193,6 @@
             color: #666;
         }
         
-        /* 结果表格样式 */
         .results-table {
             width: 100%;
             border-collapse: collapse;
@@ -251,7 +248,6 @@
             color: #1565c0;
         }
         
-        /* 转换器样式 */
         .converter-section {
             background: #f8f9fa;
             padding: 25px;
@@ -292,7 +288,6 @@
             background: #f0f0f0;
         }
         
-        /* 响应式设计 */
         @media (max-width: 1024px) {
             .main-content {
                 flex-direction: column;
@@ -321,7 +316,6 @@
             }
         }
         
-        /* 动画效果 */
         .fade-in {
             animation: fadeIn 0.5s ease-in;
         }
@@ -331,7 +325,6 @@
             to { opacity: 1; transform: translateY(0); }
         }
         
-        /* 卡片视图 */
         .card-view {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -385,141 +378,217 @@
             font-size: 0.95rem;
             border-left: 3px solid #3498db;
         }
+        
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255,255,255,0.9);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid var(--secondary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .error-message {
+            background: #ffe6e6;
+            border: 1px solid #ff9999;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px;
+            text-align: center;
+            color: #cc0000;
+        }
+        
+        .success-message {
+            background: #e6ffe6;
+            border: 1px solid #99ff99;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px;
+            text-align: center;
+            color: #006600;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
             <h1>📚 Sinographic Integration Lexicon</h1>
-            <p class="subtitle">Online Query Tool for 1500 English-Chinese Logographic Mappings</p>
+            <p class="subtitle">Online Query Tool - 1500 English-Chinese Logographic Mappings</p>
+            <p class="subtitle">数据源: JSON数据库实时加载</p>
         </header>
         
         <div class="main-content">
             <!-- 侧边栏 -->
             <div class="sidebar">
                 <div class="search-box">
-                    <input type="text" id="searchInput" placeholder="Search English, Hanzi, Pinyin or Meaning...">
+                    <input type="text" id="searchInput" placeholder="搜索英文、汉字、拼音或释义...">
                 </div>
                 
                 <div class="filter-section">
-                    <h3><i class="fas fa-filter"></i> Filters</h3>
+                    <h3><i class="fas fa-filter"></i> 筛选器</h3>
                     
                     <div class="filter-group">
-                        <label>Priority Level</label>
+                        <label>优先级</label>
                         <select id="priorityFilter" class="filter-select">
-                            <option value="all">All Priorities</option>
-                            <option value="1">P1 - Most Frequent (500)</option>
-                            <option value="2">P2 - High Frequency (350)</option>
-                            <option value="3">P3 - Medium Frequency (300)</option>
-                            <option value="4">P4 - Low Frequency (200)</option>
-                            <option value="5">P5 - Specialized (150)</option>
+                            <option value="all">所有优先级</option>
+                            <option value="1">P1 - 最高频 (500)</option>
+                            <option value="2">P2 - 高频 (350)</option>
+                            <option value="3">P3 - 中频 (300)</option>
+                            <option value="4">P4 - 低频 (200)</option>
+                            <option value="5">P5 - 专业 (150)</option>
                         </select>
                     </div>
                     
                     <div class="filter-group">
-                        <label>Part of Speech</label>
+                        <label>词性</label>
                         <div class="checkbox-group" id="posFilter">
                             <div class="checkbox-item">
                                 <input type="checkbox" id="pos-n" checked>
-                                <label for="pos-n">Nouns</label>
+                                <label for="pos-n">名词</label>
                             </div>
                             <div class="checkbox-item">
                                 <input type="checkbox" id="pos-v" checked>
-                                <label for="pos-v">Verbs</label>
+                                <label for="pos-v">动词</label>
                             </div>
                             <div class="checkbox-item">
                                 <input type="checkbox" id="pos-adj" checked>
-                                <label for="pos-adj">Adjectives</label>
+                                <label for="pos-adj">形容词</label>
                             </div>
                             <div class="checkbox-item">
                                 <input type="checkbox" id="pos-adv" checked>
-                                <label for="pos-adv">Adverbs</label>
+                                <label for="pos-adv">副词</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="pos-prep" checked>
+                                <label for="pos-prep">介词</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="pos-conj" checked>
+                                <label for="pos-conj">连词</label>
                             </div>
                         </div>
                     </div>
                     
                     <div class="filter-group">
-                        <label>Semantic Category</label>
+                        <label>语义类别</label>
                         <select id="categoryFilter" class="filter-select">
-                            <option value="all">All Categories</option>
-                            <option value="Nature/Existence">Nature/Existence</option>
-                            <option value="People/Society">People/Society</option>
-                            <option value="Body/Health">Body/Health</option>
-                            <option value="Actions/Changes">Actions/Changes</option>
-                            <option value="Qualities/Degree">Qualities/Degree</option>
-                            <option value="Relations/Functions">Relations/Functions</option>
-                            <option value="Modern/Abstract">Modern/Abstract</option>
+                            <option value="all">所有类别</option>
+                            <option value="Nature/Existence">自然与存在</option>
+                            <option value="People/Society">人与社会</option>
+                            <option value="Body/Health">身体与健康</option>
+                            <option value="Actions/Changes">动作与变化</option>
+                            <option value="Qualities/Degree">性状与程度</option>
+                            <option value="Relations/Functions">关系与功能</option>
+                            <option value="Modern/Abstract">现代抽象概念</option>
                         </select>
                     </div>
                     
                     <div class="filter-group">
-                        <label>Mapping Logic</label>
+                        <label>映射逻辑</label>
                         <select id="logicFilter" class="filter-select">
-                            <option value="all">All Types</option>
-                            <option value="T1">T1 - Direct Match</option>
-                            <option value="T2">T2 - Near Match</option>
-                            <option value="T3">T3 - Core Meaning</option>
-                            <option value="T4">T4 - Cultural Loan</option>
-                            <option value="T5">T5 - System Compound</option>
+                            <option value="all">所有类型</option>
+                            <option value="T1">T1 - 直接对应</option>
+                            <option value="T2">T2 - 近义优选</option>
+                            <option value="T3">T3 - 语义收窄</option>
+                            <option value="T4">T4 - 文化借词</option>
+                            <option value="T5">T5 - 系统组合</option>
+                            <option value="T0">T0 - 保留英文</option>
                         </select>
                     </div>
                 </div>
                 
                 <button class="btn" id="resetFilters">
-                    <i class="fas fa-redo"></i> Reset All Filters
+                    <i class="fas fa-redo"></i> 重置筛选器
                 </button>
                 
                 <div class="filter-section">
-                    <h3><i class="fas fa-cogs"></i> View Options</h3>
+                    <h3><i class="fas fa-cogs"></i> 显示选项</h3>
                     <div class="filter-group">
-                        <label>Results View</label>
+                        <label>显示模式</label>
                         <select id="viewMode" class="filter-select">
-                            <option value="table">Table View</option>
-                            <option value="cards">Card View</option>
+                            <option value="table">表格视图</option>
+                            <option value="cards">卡片视图</option>
                         </select>
                     </div>
                     
                     <div class="filter-group">
-                        <label>Items Per Page</label>
+                        <label>每页显示</label>
                         <select id="pageSize" class="filter-select">
-                            <option value="25">25 items</option>
-                            <option value="50" selected>50 items</option>
-                            <option value="100">100 items</option>
-                            <option value="500">500 items</option>
-                            <option value="all">All items</option>
+                            <option value="25">25 项</option>
+                            <option value="50" selected>50 项</option>
+                            <option value="100">100 项</option>
+                            <option value="500">500 项</option>
+                            <option value="all">全部</option>
                         </select>
                     </div>
                 </div>
                 
                 <button class="btn btn-accent" id="exportBtn">
-                    <i class="fas fa-download"></i> Export Current Results
+                    <i class="fas fa-download"></i> 导出当前结果
+                </button>
+                
+                <button class="btn" id="refreshBtn" style="margin-top: 10px;">
+                    <i class="fas fa-sync"></i> 刷新数据
                 </button>
             </div>
             
             <!-- 主内容区 -->
             <div class="content-area">
+                <!-- 加载提示 -->
+                <div id="loadingOverlay" class="loading-overlay" style="display: none;">
+                    <div class="spinner"></div>
+                    <h3>正在加载数据...</h3>
+                    <p id="loadingText">从JSON数据库加载词汇表</p>
+                </div>
+                
+                <!-- 错误提示 -->
+                <div id="errorMessage" class="error-message" style="display: none;"></div>
+                
+                <!-- 成功提示 -->
+                <div id="successMessage" class="success-message" style="display: none;"></div>
+                
                 <div class="stats-bar">
                     <div class="stat-item">
-                        <div class="stat-value" id="totalCount">1500</div>
-                        <div class="stat-label">Total Words</div>
+                        <div class="stat-value" id="totalCount">0</div>
+                        <div class="stat-label">总词数</div>
                     </div>
                     <div class="stat-item">
-                        <div class="stat-value" id="filteredCount">1500</div>
-                        <div class="stat-label">Filtered Words</div>
+                        <div class="stat-value" id="filteredCount">0</div>
+                        <div class="stat-label">筛选结果</div>
                     </div>
                     <div class="stat-item">
-                        <div class="stat-value" id="priority1Count">500</div>
-                        <div class="stat-label">P1 Words</div>
+                        <div class="stat-value" id="hanziCount">0</div>
+                        <div class="stat-label">唯一汉字</div>
                     </div>
                     <div class="stat-item">
-                        <div class="stat-value" id="hanziCount">1200</div>
-                        <div class="stat-label">Unique Hanzi</div>
+                        <div class="stat-value" id="categoriesCount">0</div>
+                        <div class="stat-label">类别数量</div>
                     </div>
                 </div>
                 
                 <div class="results-info">
-                    Showing <span id="showingCount">1500</span> of <span id="totalCount2">1500</span> entries
-                    <span id="searchInfo" style="display:none;"> for "<span id="searchTerm"></span>"</span>
+                    显示 <span id="showingCount">0</span> 个结果，共 <span id="totalCount2">0</span> 个词条
+                    <span id="searchInfo" style="display:none;">，搜索词: "<span id="searchTerm"></span>"</span>
                 </div>
                 
                 <!-- 表格视图 -->
@@ -527,14 +596,14 @@
                     <table class="results-table">
                         <thead>
                             <tr>
-                                <th>English</th>
-                                <th>Hanzi</th>
-                                <th>Pinyin</th>
-                                <th>POS</th>
-                                <th>Category</th>
-                                <th>Priority</th>
-                                <th>Logic</th>
-                                <th>Example</th>
+                                <th>英文</th>
+                                <th>汉字</th>
+                                <th>拼音</th>
+                                <th>词性</th>
+                                <th>类别</th>
+                                <th>优先级</th>
+                                <th>逻辑</th>
+                                <th>示例</th>
                             </tr>
                         </thead>
                         <tbody id="resultsBody">
@@ -553,55 +622,64 @@
                 <!-- 分页控件 -->
                 <div id="pagination" style="text-align: center; margin-top: 30px;">
                     <button id="prevPage" class="btn" style="width: auto; display: inline-block; margin-right: 10px;">
-                        <i class="fas fa-chevron-left"></i> Previous
+                        <i class="fas fa-chevron-left"></i> 上一页
                     </button>
-                    <span id="pageInfo" style="margin: 0 15px;">Page 1 of 30</span>
+                    <span id="pageInfo" style="margin: 0 15px;">第 1 页，共 1 页</span>
                     <button id="nextPage" class="btn" style="width: auto; display: inline-block; margin-left: 10px;">
-                        Next <i class="fas fa-chevron-right"></i>
+                        下一页 <i class="fas fa-chevron-right"></i>
                     </button>
                 </div>
                 
                 <!-- 文本转换器 -->
                 <div class="converter-section">
                     <h3 class="converter-title">
-                        <i class="fas fa-exchange-alt"></i> Text Converter
+                        <i class="fas fa-exchange-alt"></i> 文本转换器
                     </h3>
                     <div class="converter-box">
                         <div class="converter-input">
-                            <label>Input English Text:</label>
-                            <textarea id="inputText" placeholder="Enter English text to convert to mixed script...">I love my family and friends. We eat dinner together every day.</textarea>
+                            <label>输入英文文本:</label>
+                            <textarea id="inputText" placeholder="输入英文文本，转换为混合文字...">I love my family and friends. We eat dinner together every day. The sun rises in the east and sets in the west.</textarea>
                             <button class="btn" id="convertBtn" style="margin-top: 10px;">
-                                <i class="fas fa-magic"></i> Convert Text
+                                <i class="fas fa-magic"></i> 转换文本
                             </button>
                         </div>
                         <div class="converter-output">
-                            <label>Mixed Script Output:</label>
-                            <textarea id="outputText" readonly placeholder="Converted text will appear here..."></textarea>
-                            <button class="btn btn-accent" id="copyBtn" style="margin-top: 10px;">
-                                <i class="fas fa-copy"></i> Copy to Clipboard
-                            </button>
+                            <label>混合文字输出:</label>
+                            <textarea id="outputText" readonly placeholder="转换结果将显示在这里..."></textarea>
+                            <div style="display: flex; gap: 10px; margin-top: 10px;">
+                                <button class="btn btn-accent" id="copyBtn">
+                                    <i class="fas fa-copy"></i> 复制到剪贴板
+                                </button>
+                                <button class="btn" id="clearBtn">
+                                    <i class="fas fa-trash"></i> 清空
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
                 
-                <!-- 学习模式 -->
+                <!-- 数据统计 -->
                 <div class="converter-section" style="margin-top: 30px;">
                     <h3 class="converter-title">
-                        <i class="fas fa-graduation-cap"></i> Learning Mode
+                        <i class="fas fa-chart-bar"></i> 数据统计
                     </h3>
-                    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-                        <button class="btn" id="quizBtn">
-                            <i class="fas fa-question-circle"></i> Generate Quiz
-                        </button>
-                        <button class="btn" id="flashcardsBtn">
-                            <i class="fas fa-layer-group"></i> Flashcards
-                        </button>
-                        <button class="btn" id="studyPlanBtn">
-                            <i class="fas fa-calendar-alt"></i> Create Study Plan
-                        </button>
+                    <div id="categoryChart" style="height: 200px; margin-top: 20px;">
+                        <!-- 图表将通过Canvas绘制 -->
+                        <canvas id="chartCanvas"></canvas>
                     </div>
-                    <div id="quizContainer" style="display: none; margin-top: 20px;">
-                        <!-- 测验内容动态加载 -->
+                    <div style="display: flex; justify-content: space-between; margin-top: 20px;">
+                        <div>
+                            <h4>优先级分布</h4>
+                            <div id="priorityDistribution">
+                                <!-- 动态生成 -->
+                            </div>
+                        </div>
+                        <div>
+                            <h4>词性分布</h4>
+                            <div id="posDistribution">
+                                <!-- 动态生成 -->
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -609,113 +687,184 @@
     </div>
 
     <script>
-        // 1. 初始化变量
-        let fullData = [];
-        let filteredData = [];
-        let currentPage = 1;
-        let itemsPerPage = 50;
-        let currentView = 'table';
+        // ============== 全局变量 ==============
+        let lexiconData = null;           // 完整的词汇数据
+        let filteredData = [];            // 筛选后的数据
+        let currentPage = 1;              // 当前页码
+        let itemsPerPage = 50;            // 每页显示数量
+        let currentView = 'table';        // 当前视图模式
         
-        // 2. 页面加载时初始化
-        document.addEventListener('DOMContentLoaded', async function() {
-            await loadData();
-            initializeFilters();
-            updateDisplay();
+        // ============== 页面加载 ==============
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log("页面加载完成，开始初始化...");
+            showLoading("正在加载Sinographic Integration Lexicon数据库...");
+            
+            // 初始化事件监听器
             setupEventListeners();
+            
+            // 加载JSON数据
+            loadLexiconData();
         });
         
-        // 3. 加载数据（实际部署中从服务器获取）
-        async function loadData() {
+        // ============== 数据加载函数 ==============
+        async function loadLexiconData() {
             try {
-                // 这里可以替换为实际API调用
-                // const response = await fetch('https://api.example.com/lexicon');
-                // fullData = await response.json();
+                console.log("开始加载JSON数据...");
                 
-                // 模拟数据加载
-                console.log("Loading data...");
+                // 尝试从多个可能的路径加载JSON文件
+                const possiblePaths = [
+                    'sinographic_lexicon_1500.json',
+                    'data/sinographic_lexicon_1500.json',
+                    'lexicon.json',
+                    './sinographic_lexicon_1500.json',
+                    '../sinographic_lexicon_1500.json'
+                ];
                 
-                // 如果部署在服务器，使用：
-                // const response = await fetch('data/lexicon.json');
-                // fullData = await response.json();
+                let data = null;
+                let error = null;
                 
-                // 为演示目的，我们创建一些示例数据
-                // 实际部署中应使用完整的1500词数据集
-                fullData = generateSampleData(100); // 示例100条
-                filteredData = [...fullData];
+                for (const path of possiblePaths) {
+                    try {
+                        console.log(`尝试加载: ${path}`);
+                        const response = await fetch(path);
+                        
+                        if (!response.ok) {
+                            throw new Error(`HTTP错误: ${response.status}`);
+                        }
+                        
+                        data = await response.json();
+                        console.log(`成功从 ${path} 加载数据`);
+                        break;
+                    } catch (err) {
+                        error = err;
+                        console.log(`无法从 ${path} 加载: ${err.message}`);
+                        continue;
+                    }
+                }
                 
-                updateStats();
+                if (!data) {
+                    // 如果所有路径都失败，尝试使用内联数据
+                    console.log("尝试使用内联示例数据...");
+                    data = getSampleData();
+                }
+                
+                // 处理数据
+                processLoadedData(data);
+                
             } catch (error) {
-                console.error("Error loading data:", error);
-                alert("Failed to load lexicon data. Please try again later.");
+                console.error("加载数据失败:", error);
+                showError(`无法加载词汇表数据: ${error.message}`);
             }
         }
         
-        // 4. 生成示例数据
-        function generateSampleData(count) {
-            const sampleWords = [
-                // Nature
-                {id: 1, english: "sun", hanzi: "日", pinyin: "rì", pos: "n", 
-                 meaning_en: "the star at the center of solar system", 
-                 meaning_zh: "太阳", logic: "T1", priority: 1, 
-                 category: "Nature/Existence", 
-                 example: "The 日 rises in the east."},
+        function processLoadedData(data) {
+            try {
+                console.log("处理加载的数据...");
                 
-                {id: 2, english: "water", hanzi: "水", pinyin: "shuǐ", pos: "n",
-                 meaning_en: "transparent liquid", meaning_zh: "水", 
-                 logic: "T1", priority: 1, category: "Nature/Existence",
-                 example: "Drink 水 every day."},
+                // 检查数据结构
+                if (data.metadata && data.lexicon) {
+                    // 完整JSON格式
+                    lexiconData = data.lexicon;
+                    console.log(`加载完整数据: ${lexiconData.length} 个词条`);
+                } else if (data.m && data.l) {
+                    // 压缩JSON格式
+                    lexiconData = decompressData(data);
+                    console.log(`加载并解压数据: ${lexiconData.length} 个词条`);
+                } else if (Array.isArray(data)) {
+                    // 简单数组格式
+                    lexiconData = data;
+                    console.log(`加载数组数据: ${lexiconData.length} 个词条`);
+                } else {
+                    throw new Error("无法识别的数据格式");
+                }
                 
-                // People
-                {id: 3, english: "person", hanzi: "人", pinyin: "rén", pos: "n",
-                 meaning_en: "human being", meaning_zh: "人", 
-                 logic: "T1", priority: 1, category: "People/Society",
-                 example: "Every 人 has rights."},
+                // 确保所有词条都有必要的字段
+                lexiconData = lexiconData.map((item, index) => {
+                    return {
+                        id: item.id || index + 1,
+                        english: item.english || item[1] || '',
+                        hanzi: item.hanzi || item[2] || '(保留)',
+                        pinyin: item.pinyin || item[3] || '',
+                        pos: item.pos || item[4] || 'n',
+                        category: item.category || (item[5] ? expandCategory(item[5]) : 'Unknown'),
+                        priority: item.priority || item[6] || 3,
+                        logic: item.logic || item[7] || 'T1',
+                        meaning_en: item.meaning_en || `meaning of ${item.english || ''}`,
+                        meaning_zh: item.meaning_zh || `${item.hanzi || ''}的释义`,
+                        example: item.example || `Example: ${item.english || ''}`,
+                        notes: item.notes || `ID: ${item.id || index + 1}`
+                    };
+                });
                 
-                {id: 4, english: "friend", hanzi: "友", pinyin: "yǒu", pos: "n",
-                 meaning_en: "person whom one knows and likes", meaning_zh: "朋友",
-                 logic: "T1", priority: 1, category: "People/Society",
-                 example: "He is my best 友."},
+                // 初始筛选
+                filteredData = [...lexiconData];
                 
-                // Actions
-                {id: 5, english: "see", hanzi: "见", pinyin: "jiàn", pos: "v",
-                 meaning_en: "perceive with eyes", meaning_zh: "看见",
-                 logic: "T1", priority: 1, category: "Actions/Changes",
-                 example: "I 见 a bird."},
+                // 更新统计信息
+                updateStatistics();
                 
-                {id: 6, english: "speak", hanzi: "言", pinyin: "yán", pos: "v",
-                 meaning_en: "say words", meaning_zh: "说话",
-                 logic: "T1", priority: 1, category: "Actions/Changes",
-                 example: "He 言 very clearly."},
+                // 更新显示
+                updateDisplay();
                 
-                // 更多示例数据...
-            ];
+                // 隐藏加载提示
+                hideLoading();
+                
+                // 显示成功消息
+                showSuccess(`成功加载 ${lexiconData.length} 个词条！`);
+                
+            } catch (error) {
+                console.error("处理数据时出错:", error);
+                showError(`数据处理错误: ${error.message}`);
+            }
+        }
+        
+        function decompressData(compressedData) {
+            // 解压压缩的JSON数据
+            const lexicon = [];
+            const categoryMap = {
+                'Nat': 'Nature/Existence',
+                'Peo': 'People/Society',
+                'Bod': 'Body/Health',
+                'Act': 'Actions/Changes',
+                'Qua': 'Qualities/Degree',
+                'Rel': 'Relations/Functions',
+                'Mod': 'Modern/Abstract'
+            };
             
-            // 复制示例数据以达到指定数量
-            let data = [];
-            for (let i = 0; i < count; i++) {
-                const original = sampleWords[i % sampleWords.length];
-                data.push({
-                    ...original,
-                    id: i + 1,
-                    english: original.english + (i > sampleWords.length ? (i + 1) : "")
+            if (compressedData.l && Array.isArray(compressedData.l)) {
+                compressedData.l.forEach((item, index) => {
+                    lexicon.push({
+                        id: item[0] || index + 1,
+                        english: item[1] || '',
+                        hanzi: item[2] || '(保留)',
+                        pinyin: item[3] || '',
+                        pos: item[4] || 'n',
+                        category: categoryMap[item[5]] || item[5] || 'Unknown',
+                        priority: item[6] || 3,
+                        logic: item[7] || 'T1'
+                    });
                 });
             }
             
-            return data;
+            return lexicon;
         }
         
-        // 5. 初始化筛选器
-        function initializeFilters() {
-            // 设置默认值
-            document.getElementById('priorityFilter').value = 'all';
-            document.getElementById('categoryFilter').value = 'all';
-            document.getElementById('logicFilter').value = 'all';
-            document.getElementById('viewMode').value = 'table';
-            document.getElementById('pageSize').value = '50';
+        function expandCategory(code) {
+            const map = {
+                'N': 'Nature/Existence',
+                'P': 'People/Society',
+                'B': 'Body/Health',
+                'A': 'Actions/Changes',
+                'Q': 'Qualities/Degree',
+                'R': 'Relations/Functions',
+                'M': 'Modern/Abstract'
+            };
+            return map[code] || code;
         }
         
-        // 6. 设置事件监听器
+        // ============== 事件监听器设置 ==============
         function setupEventListeners() {
+            console.log("设置事件监听器...");
+            
             // 搜索输入
             document.getElementById('searchInput').addEventListener('input', debounce(handleSearch, 300));
             
@@ -723,15 +872,17 @@
             document.getElementById('priorityFilter').addEventListener('change', applyFilters);
             document.getElementById('categoryFilter').addEventListener('change', applyFilters);
             document.getElementById('logicFilter').addEventListener('change', applyFilters);
-            document.getElementById('pageSize').addEventListener('change', function() {
-                itemsPerPage = this.value === 'all' ? Infinity : parseInt(this.value);
-                currentPage = 1;
-                updateDisplay();
-            });
             
             // 词性复选框
             document.querySelectorAll('#posFilter input').forEach(checkbox => {
                 checkbox.addEventListener('change', applyFilters);
+            });
+            
+            // 每页显示数量
+            document.getElementById('pageSize').addEventListener('change', function() {
+                itemsPerPage = this.value === 'all' ? Infinity : parseInt(this.value);
+                currentPage = 1;
+                updateDisplay();
             });
             
             // 视图切换
@@ -745,6 +896,14 @@
             
             // 导出按钮
             document.getElementById('exportBtn').addEventListener('click', exportData);
+            
+            // 刷新按钮
+            document.getElementById('refreshBtn').addEventListener('click', function() {
+                showLoading("重新加载数据...");
+                setTimeout(() => {
+                    loadLexiconData();
+                }, 500);
+            });
             
             // 分页按钮
             document.getElementById('prevPage').addEventListener('click', function() {
@@ -765,27 +924,28 @@
             // 转换器按钮
             document.getElementById('convertBtn').addEventListener('click', convertText);
             document.getElementById('copyBtn').addEventListener('click', copyToClipboard);
+            document.getElementById('clearBtn').addEventListener('click', function() {
+                document.getElementById('inputText').value = '';
+                document.getElementById('outputText').value = '';
+            });
             
-            // 学习模式按钮
-            document.getElementById('quizBtn').addEventListener('click', generateQuiz);
-            document.getElementById('flashcardsBtn').addEventListener('click', showFlashcards);
-            document.getElementById('studyPlanBtn').addEventListener('click', createStudyPlan);
+            // 键盘快捷键
+            document.addEventListener('keydown', function(e) {
+                // Ctrl+F 聚焦搜索框
+                if ((e.ctrlKey || e.metaKey) && e.key === 'f') {
+                    e.preventDefault();
+                    document.getElementById('searchInput').focus();
+                }
+                
+                // ESC 清除搜索
+                if (e.key === 'Escape') {
+                    document.getElementById('searchInput').value = '';
+                    handleSearch();
+                }
+            });
         }
         
-        // 7. 防抖函数
-        function debounce(func, wait) {
-            let timeout;
-            return function executedFunction(...args) {
-                const later = () => {
-                    clearTimeout(timeout);
-                    func(...args);
-                };
-                clearTimeout(timeout);
-                timeout = setTimeout(later, wait);
-            };
-        }
-        
-        // 8. 处理搜索
+        // ============== 筛选和搜索函数 ==============
         function handleSearch() {
             const searchTerm = document.getElementById('searchInput').value.toLowerCase();
             applyFilters();
@@ -802,8 +962,9 @@
             }
         }
         
-        // 9. 应用筛选器
         function applyFilters() {
+            if (!lexiconData) return;
+            
             const searchTerm = document.getElementById('searchInput').value.toLowerCase();
             const priority = document.getElementById('priorityFilter').value;
             const category = document.getElementById('categoryFilter').value;
@@ -814,11 +975,13 @@
                 'n': document.getElementById('pos-n').checked,
                 'v': document.getElementById('pos-v').checked,
                 'adj': document.getElementById('pos-adj').checked,
-                'adv': document.getElementById('pos-adv').checked
+                'adv': document.getElementById('pos-adv').checked,
+                'prep': document.getElementById('pos-prep').checked,
+                'conj': document.getElementById('pos-conj').checked
             };
             
             // 筛选数据
-            filteredData = fullData.filter(item => {
+            filteredData = lexiconData.filter(item => {
                 // 搜索筛选
                 if (searchTerm) {
                     const matchesSearch = 
@@ -826,7 +989,8 @@
                         item.hanzi.includes(searchTerm) ||
                         item.pinyin.toLowerCase().includes(searchTerm) ||
                         item.meaning_en.toLowerCase().includes(searchTerm) ||
-                        item.meaning_zh.includes(searchTerm);
+                        item.meaning_zh.includes(searchTerm) ||
+                        item.category.toLowerCase().includes(searchTerm);
                     
                     if (!matchesSearch) return false;
                 }
@@ -847,7 +1011,15 @@
                 }
                 
                 // 词性筛选
-                if (!posFilters[item.pos]) {
+                const pos = item.pos.toLowerCase();
+                const posKey = pos.startsWith('adj') ? 'adj' : 
+                              pos.startsWith('adv') ? 'adv' :
+                              pos.startsWith('prep') ? 'prep' :
+                              pos.startsWith('conj') ? 'conj' :
+                              pos.startsWith('v') ? 'v' :
+                              pos.startsWith('n') ? 'n' : pos;
+                              
+                if (!posFilters[posKey]) {
                     return false;
                 }
                 
@@ -855,53 +1027,67 @@
             });
             
             currentPage = 1;
-            updateStats();
+            updateStatistics();
             updateDisplay();
         }
         
-        // 10. 重置筛选器
         function resetFilters() {
             document.getElementById('searchInput').value = '';
-            initializeFilters();
+            document.getElementById('priorityFilter').value = 'all';
+            document.getElementById('categoryFilter').value = 'all';
+            document.getElementById('logicFilter').value = 'all';
+            document.getElementById('viewMode').value = 'table';
+            document.getElementById('pageSize').value = '50';
+            
             document.querySelectorAll('#posFilter input').forEach(cb => cb.checked = true);
             
-            filteredData = [...fullData];
-            currentPage = 1;
-            updateStats();
-            updateDisplay();
+            if (lexiconData) {
+                filteredData = [...lexiconData];
+                currentPage = 1;
+                updateStatistics();
+                updateDisplay();
+            }
             
             document.getElementById('searchInfo').style.display = 'none';
+            showSuccess("筛选器已重置");
         }
         
-        // 11. 更新统计信息
-        function updateStats() {
-            const totalCount = fullData.length;
+        // ============== 显示和渲染函数 ==============
+        function updateStatistics() {
+            if (!lexiconData) return;
+            
+            const totalCount = lexiconData.length;
             const filteredCount = filteredData.length;
             
-            // 计算各优先级数量
-            const priorityCounts = {1: 0, 2: 0, 3: 0, 4: 0, 5: 0};
-            fullData.forEach(item => {
-                if (item.priority >= 1 && item.priority <= 5) {
-                    priorityCounts[item.priority]++;
-                }
-            });
+            // 计算唯一汉字数量
+            const uniqueHanzi = new Set(lexiconData
+                .filter(item => item.hanzi !== '(保留)')
+                .map(item => item.hanzi)).size;
+            
+            // 计算类别数量
+            const uniqueCategories = new Set(lexiconData.map(item => item.category)).size;
             
             // 更新显示
             document.getElementById('totalCount').textContent = totalCount;
             document.getElementById('filteredCount').textContent = filteredCount;
-            document.getElementById('priority1Count').textContent = priorityCounts[1];
-            
-            // 计算唯一汉字数量
-            const uniqueHanzi = new Set(fullData.map(item => item.hanzi)).size;
             document.getElementById('hanziCount').textContent = uniqueHanzi;
+            document.getElementById('categoriesCount').textContent = uniqueCategories;
             
             // 更新结果信息
-            document.getElementById('showingCount').textContent = Math.min(filteredCount, itemsPerPage);
+            const showingCount = Math.min(filteredCount, itemsPerPage);
+            document.getElementById('showingCount').textContent = showingCount;
             document.getElementById('totalCount2').textContent = filteredCount;
+            
+            // 更新图表
+            updateCharts();
         }
         
-        // 12. 更新显示
         function updateDisplay() {
+            if (!filteredData || filteredData.length === 0) {
+                renderNoResults();
+                return;
+            }
+            
             // 计算分页
             const startIndex = (currentPage - 1) * itemsPerPage;
             const endIndex = Math.min(startIndex + itemsPerPage, filteredData.length);
@@ -910,7 +1096,7 @@
             // 更新分页信息
             const totalPages = Math.ceil(filteredData.length / itemsPerPage);
             document.getElementById('pageInfo').textContent = 
-                `Page ${currentPage} of ${totalPages}`;
+                `第 ${currentPage} 页，共 ${totalPages} 页`;
             
             document.getElementById('prevPage').disabled = currentPage <= 1;
             document.getElementById('nextPage').disabled = currentPage >= totalPages;
@@ -930,98 +1116,179 @@
             document.getElementById('showingCount').textContent = pageData.length;
         }
         
-        // 13. 渲染表格视图
+        function renderNoResults() {
+            const tbody = document.getElementById('resultsBody');
+            const cardContainer = document.getElementById('cardsContainer');
+            
+            const noResultsHTML = `
+                <tr>
+                    <td colspan="8" style="text-align: center; padding: 40px; color: #666;">
+                        <i class="fas fa-search" style="font-size: 2rem; margin-bottom: 15px; display: block;"></i>
+                        没有找到匹配的词条。请尝试调整筛选条件。
+                    </td>
+                </tr>
+            `;
+            
+            const noResultsCardHTML = `
+                <div style="text-align: center; padding: 40px; color: #666; grid-column: 1/-1;">
+                    <i class="fas fa-search" style="font-size: 2rem; margin-bottom: 15px; display: block;"></i>
+                    没有找到匹配的词条。请尝试调整筛选条件。
+                </div>
+            `;
+            
+            tbody.innerHTML = noResultsHTML;
+            cardContainer.innerHTML = noResultsCardHTML;
+        }
+        
         function renderTableView(data) {
             const tbody = document.getElementById('resultsBody');
             tbody.innerHTML = '';
             
-            if (data.length === 0) {
-                tbody.innerHTML = `
-                    <tr>
-                        <td colspan="8" style="text-align: center; padding: 40px; color: #666;">
-                            <i class="fas fa-search" style="font-size: 2rem; margin-bottom: 15px; display: block;"></i>
-                            No matching words found. Try adjusting your filters.
-                        </td>
-                    </tr>
-                `;
-                return;
-            }
-            
             data.forEach(item => {
                 const row = document.createElement('tr');
                 row.className = 'fade-in';
+                
+                // 简写类别名称
+                const shortCategory = item.category.split('/')[0];
+                
                 row.innerHTML = `
-                    <td><strong>${item.english}</strong><br>
-                        <small style="color: #666;">${item.meaning_en}</small></td>
-                    <td class="hanzi-cell">${item.hanzi}</td>
-                    <td>${item.pinyin}</td>
-                    <td><span class="logic-badge">${item.pos}</span></td>
-                    <td>${item.category.split('/')[0]}</td>
+                    <td>
+                        <strong>${escapeHtml(item.english)}</strong><br>
+                        <small style="color: #666;">${escapeHtml(item.meaning_en)}</small>
+                    </td>
+                    <td class="hanzi-cell">${escapeHtml(item.hanzi)}</td>
+                    <td>${escapeHtml(item.pinyin)}</td>
+                    <td><span class="logic-badge">${escapeHtml(item.pos)}</span></td>
+                    <td>${escapeHtml(shortCategory)}</td>
                     <td><span class="priority-badge priority-${item.priority}">P${item.priority}</span></td>
-                    <td><span class="logic-badge">${item.logic}</span></td>
-                    <td><small>${item.example}</small></td>
+                    <td><span class="logic-badge">${escapeHtml(item.logic)}</span></td>
+                    <td><small>${escapeHtml(item.example)}</small></td>
                 `;
                 tbody.appendChild(row);
             });
         }
         
-        // 14. 渲染卡片视图
         function renderCardView(data) {
             const container = document.getElementById('cardsContainer');
             container.innerHTML = '';
             
-            if (data.length === 0) {
-                container.innerHTML = `
-                    <div style="text-align: center; padding: 40px; color: #666; grid-column: 1/-1;">
-                        <i class="fas fa-search" style="font-size: 2rem; margin-bottom: 15px; display: block;"></i>
-                        No matching words found. Try adjusting your filters.
-                    </div>
-                `;
-                return;
-            }
-            
             data.forEach(item => {
                 const card = document.createElement('div');
                 card.className = 'word-card fade-in';
+                
+                // 简写类别名称
+                const shortCategory = item.category.split('/')[0];
+                
                 card.innerHTML = `
                     <div class="card-header">
                         <div style="display: flex; align-items: center;">
-                            <div class="card-hanzi">${item.hanzi}</div>
+                            <div class="card-hanzi">${escapeHtml(item.hanzi)}</div>
                             <div>
-                                <div class="card-english">${item.english}</div>
-                                <div class="card-pinyin">${item.pinyin}</div>
+                                <div class="card-english">${escapeHtml(item.english)}</div>
+                                <div class="card-pinyin">${escapeHtml(item.pinyin)}</div>
                             </div>
                         </div>
                         <span class="priority-badge priority-${item.priority}">P${item.priority}</span>
                     </div>
                     <div style="margin-bottom: 10px;">
-                        <small style="color: #666;">${item.meaning_en}</small>
+                        <small style="color: #666;">${escapeHtml(item.meaning_en)}</small>
                     </div>
-                    <div style="display: flex; gap: 10px; margin-top: 15px;">
-                        <span class="logic-badge">${item.pos}</span>
-                        <span class="logic-badge">${item.logic}</span>
-                        <span style="font-size: 0.8rem; color: #7f8c8d;">${item.category}</span>
+                    <div style="display: flex; gap: 10px; margin-top: 15px; flex-wrap: wrap;">
+                        <span class="logic-badge">${escapeHtml(item.pos)}</span>
+                        <span class="logic-badge">${escapeHtml(item.logic)}</span>
+                        <span style="font-size: 0.8rem; color: #7f8c8d;">${escapeHtml(shortCategory)}</span>
                     </div>
                     <div class="card-example">
-                        <strong>Example:</strong> ${item.example}
+                        <strong>示例:</strong> ${escapeHtml(item.example)}
                     </div>
                 `;
                 container.appendChild(card);
             });
         }
         
-        // 15. 导出数据
+        // ============== 文本转换功能 ==============
+        function convertText() {
+            if (!lexiconData) {
+                showError("词汇表数据未加载，无法转换文本");
+                return;
+            }
+            
+            const inputText = document.getElementById('inputText').value;
+            const outputTextarea = document.getElementById('outputText');
+            
+            if (!inputText.trim()) {
+                outputTextarea.value = '';
+                return;
+            }
+            
+            // 创建单词到汉字的映射字典
+            const wordMap = {};
+            lexiconData.forEach(item => {
+                if (item.hanzi !== '(保留)') {
+                    wordMap[item.english.toLowerCase()] = item.hanzi;
+                }
+            });
+            
+            // 转换文本
+            let convertedText = inputText;
+            
+            // 按单词长度排序，优先匹配长单词
+            const sortedWords = Object.keys(wordMap).sort((a, b) => b.length - a.length);
+            
+            sortedWords.forEach(word => {
+                // 创建正则表达式，匹配完整的单词（考虑复数形式等）
+                const regex = new RegExp(`\\b${word}\\b`, 'gi');
+                convertedText = convertedText.replace(regex, wordMap[word]);
+            });
+            
+            outputTextarea.value = convertedText;
+            showSuccess("文本转换完成！");
+        }
+        
+        function copyToClipboard() {
+            const outputText = document.getElementById('outputText');
+            
+            if (!outputText.value.trim()) {
+                showError("没有内容可复制");
+                return;
+            }
+            
+            outputText.select();
+            outputText.setSelectionRange(0, 99999);
+            
+            try {
+                const successful = document.execCommand('copy');
+                if (successful) {
+                    showSuccess("已复制到剪贴板！");
+                } else {
+                    showError("复制失败，请手动选择并复制");
+                }
+            } catch (err) {
+                // 使用新的 Clipboard API
+                navigator.clipboard.writeText(outputText.value)
+                    .then(() => showSuccess("已复制到剪贴板！"))
+                    .catch(() => showError("复制失败，请手动选择并复制"));
+            }
+        }
+        
+        // ============== 数据导出功能 ==============
         function exportData() {
+            if (!filteredData || filteredData.length === 0) {
+                showError("没有数据可导出");
+                return;
+            }
+            
             const dataToExport = filteredData.map(item => ({
-                English: item.english,
-                Hanzi: item.hanzi,
-                Pinyin: item.pinyin,
-                Meaning: item.meaning_en,
-                POS: item.pos,
-                Category: item.category,
-                Priority: `P${item.priority}`,
-                Logic: item.logic,
-                Example: item.example
+                英文: item.english,
+                汉字: item.hanzi,
+                拼音: item.pinyin,
+                词性: item.pos,
+                类别: item.category,
+                优先级: `P${item.priority}`,
+                映射逻辑: item.logic,
+                英文释义: item.meaning_en,
+                中文释义: item.meaning_zh,
+                示例: item.example
             }));
             
             // 转换为CSV
@@ -1036,447 +1303,247 @@
             ].join('\n');
             
             // 创建下载链接
-            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const blob = new Blob(['\ufeff' + csvContent], { type: 'text/csv;charset=utf-8;' });
             const link = document.createElement('a');
             const url = URL.createObjectURL(blob);
             link.setAttribute('href', url);
-            link.setAttribute('download', `sinographic_lexicon_${new Date().toISOString().split('T')[0]}.csv`);
+            link.setAttribute('download', `sinographic_lexicon_导出_${new Date().toISOString().split('T')[0]}.csv`);
             link.style.visibility = 'hidden';
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
             
-            // 显示导出成功消息
-            showNotification('Data exported successfully!', 'success');
+            showSuccess(`已导出 ${filteredData.length} 个词条`);
         }
         
-        // 16. 文本转换功能
-        function convertText() {
-            const inputText = document.getElementById('inputText').value;
-            const outputTextarea = document.getElementById('outputText');
+        // ============== 图表功能 ==============
+        function updateCharts() {
+            if (!lexiconData) return;
             
-            if (!inputText.trim()) {
-                outputTextarea.value = '';
-                return;
-            }
+            // 统计类别分布
+            const categoryCounts = {};
+            const priorityCounts = {1: 0, 2: 0, 3: 0, 4: 0, 5: 0};
+            const posCounts = {};
             
-            // 简单的转换逻辑
-            let convertedText = inputText;
-            
-            // 创建单词到汉字的映射
-            const wordMap = {};
-            fullData.forEach(item => {
-                wordMap[item.english.toLowerCase()] = item.hanzi;
-            });
-            
-            // 转换常见单词（实际应更复杂，考虑词性、时态等）
-            const words = Object.keys(wordMap).sort((a, b) => b.length - a.length);
-            words.forEach(word => {
-                const regex = new RegExp(`\\b${word}\\b`, 'gi');
-                convertedText = convertedText.replace(regex, wordMap[word]);
-            });
-            
-            outputTextarea.value = convertedText;
-            showNotification('Text converted successfully!', 'success');
-        }
-        
-        // 17. 复制到剪贴板
-        function copyToClipboard() {
-            const outputText = document.getElementById('outputText');
-            outputText.select();
-            outputText.setSelectionRange(0, 99999); // 移动设备支持
-            
-            try {
-                const successful = document.execCommand('copy');
-                if (successful) {
-                    showNotification('Copied to clipboard!', 'success');
-                } else {
-                    showNotification('Failed to copy. Please try again.', 'error');
+            lexiconData.forEach(item => {
+                // 类别统计
+                categoryCounts[item.category] = (categoryCounts[item.category] || 0) + 1;
+                
+                // 优先级统计
+                if (item.priority >= 1 && item.priority <= 5) {
+                    priorityCounts[item.priority]++;
                 }
-            } catch (err) {
-                // 使用新的 Clipboard API
-                navigator.clipboard.writeText(outputText.value)
-                    .then(() => showNotification('Copied to clipboard!', 'success'))
-                    .catch(() => showNotification('Failed to copy. Please try again.', 'error'));
-            }
-        }
-        
-        // 18. 生成测验
-        function generateQuiz() {
-            const quizContainer = document.getElementById('quizContainer');
-            
-            if (quizContainer.style.display === 'block') {
-                quizContainer.style.display = 'none';
-                return;
-            }
-            
-            // 从当前筛选结果中随机选择5个词
-            const quizWords = [...filteredData]
-                .sort(() => Math.random() - 0.5)
-                .slice(0, 5);
-            
-            let quizHTML = '<h4>Quick Quiz (5 Questions)</h4>';
-            
-            quizWords.forEach((word, index) => {
-                // 生成干扰项
-                const distractors = [...fullData]
-                    .filter(w => w.pos === word.pos && w.english !== word.english)
-                    .sort(() => Math.random() - 0.5)
-                    .slice(0, 3)
-                    .map(w => w.hanzi);
                 
-                const options = [word.hanzi, ...distractors]
-                    .sort(() => Math.random() - 0.5);
+                // 词性统计
+                const pos = item.pos.toLowerCase();
+                const posKey = pos.startsWith('adj') ? '形容词' : 
+                              pos.startsWith('adv') ? '副词' :
+                              pos.startsWith('prep') ? '介词' :
+                              pos.startsWith('conj') ? '连词' :
+                              pos.startsWith('v') ? '动词' :
+                              pos.startsWith('n') ? '名词' : pos;
                 
-                quizHTML += `
-                    <div style="margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 8px;">
-                        <p><strong>${index + 1}. What is the correct hanzi for "${word.english}" (${word.meaning_en})?</strong></p>
-                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 10px;">
-                            ${options.map((opt, i) => `
-                                <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
-                                    <input type="radio" name="q${index}" value="${opt}">
-                                    <span style="font-size: 1.5rem; font-family: 'SimSun', serif;">${opt}</span>
-                                </label>
-                            `).join('')}
+                posCounts[posKey] = (posCounts[posKey] || 0) + 1;
+            });
+            
+            // 更新优先级分布显示
+            const priorityContainer = document.getElementById('priorityDistribution');
+            let priorityHTML = '';
+            
+            for (let i = 1; i <= 5; i++) {
+                const count = priorityCounts[i];
+                const percentage = ((count / lexiconData.length) * 100).toFixed(1);
+                priorityHTML += `
+                    <div style="margin-bottom: 5px;">
+                        <span style="display: inline-block; width: 60px;">P${i}:</span>
+                        <div style="display: inline-block; width: 100px; background: #eee; border-radius: 3px;">
+                            <div style="width: ${percentage}%; height: 20px; background: var(--secondary); border-radius: 3px;"></div>
                         </div>
+                        <span style="margin-left: 10px;">${count} (${percentage}%)</span>
+                    </div>
+                `;
+            }
+            priorityContainer.innerHTML = priorityHTML;
+            
+            // 更新词性分布显示
+            const posContainer = document.getElementById('posDistribution');
+            let posHTML = '';
+            
+            const sortedPos = Object.entries(posCounts).sort((a, b) => b[1] - a[1]);
+            
+            sortedPos.forEach(([pos, count]) => {
+                const percentage = ((count / lexiconData.length) * 100).toFixed(1);
+                posHTML += `
+                    <div style="margin-bottom: 5px;">
+                        <span style="display: inline-block; width: 60px;">${pos}:</span>
+                        <div style="display: inline-block; width: 100px; background: #eee; border-radius: 3px;">
+                            <div style="width: ${percentage}%; height: 20px; background: var(--accent); border-radius: 3px;"></div>
+                        </div>
+                        <span style="margin-left: 10px;">${count} (${percentage}%)</span>
                     </div>
                 `;
             });
+            posContainer.innerHTML = posHTML;
             
-            quizHTML += `
-                <button class="btn" onclick="checkQuiz()" style="margin-right: 10px;">
-                    <i class="fas fa-check"></i> Check Answers
-                </button>
-                <button class="btn btn-accent" onclick="document.getElementById('quizContainer').style.display='none'">
-                    <i class="fas fa-times"></i> Close Quiz
-                </button>
-            `;
-            
-            quizContainer.innerHTML = quizHTML;
-            quizContainer.style.display = 'block';
+            // 绘制类别饼图
+            drawCategoryChart(categoryCounts);
         }
         
-        // 19. 检查测验答案
-        function checkQuiz() {
-            const quizWords = filteredData.slice(0, 5);
-            let score = 0;
+        function drawCategoryChart(categoryCounts) {
+            const canvas = document.getElementById('chartCanvas');
+            if (!canvas) return;
             
-            quizWords.forEach((word, index) => {
-                const selected = document.querySelector(`input[name="q${index}"]:checked`);
-                if (selected && selected.value === word.hanzi) {
-                    score++;
-                    selected.parentElement.style.background = '#d4edda';
-                } else if (selected) {
-                    selected.parentElement.style.background = '#f8d7da';
-                }
+            const ctx = canvas.getContext('2d');
+            
+            // 设置画布大小
+            canvas.width = 400;
+            canvas.height = 200;
+            
+            // 清除画布
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // 如果没有数据，返回
+            if (Object.keys(categoryCounts).length === 0) return;
+            
+            // 计算总数
+            const total = Object.values(categoryCounts).reduce((a, b) => a + b, 0);
+            
+            // 颜色
+            const colors = [
+                '#3498db', '#2ecc71', '#e74c3c', '#f39c12', 
+                '#9b59b6', '#1abc9c', '#34495e'
+            ];
+            
+            // 绘制图例
+            let startAngle = 0;
+            let legendY = 10;
+            let index = 0;
+            
+            const sortedCategories = Object.entries(categoryCounts)
+                .sort((a, b) => b[1] - a[1]);
+            
+            // 绘制简单的条形图（替代饼图，更简单）
+            const barHeight = 20;
+            const barSpacing = 5;
+            const maxBarWidth = 200;
+            const maxCount = Math.max(...Object.values(categoryCounts));
+            
+            sortedCategories.forEach(([category, count], i) => {
+                const color = colors[i % colors.length];
+                const percentage = ((count / total) * 100).toFixed(1);
+                const barWidth = (count / maxCount) * maxBarWidth;
+                
+                // 绘制条形
+                ctx.fillStyle = color;
+                ctx.fillRect(10, 10 + i * (barHeight + barSpacing), barWidth, barHeight);
+                
+                // 绘制文本
+                ctx.fillStyle = '#333';
+                ctx.font = '12px Arial';
+                
+                // 类别名称（简写）
+                const shortCategory = category.split('/')[0];
+                ctx.fillText(shortCategory, 10, 8 + i * (barHeight + barSpacing));
+                
+                // 数量和百分比
+                ctx.fillText(`${count} (${percentage}%)`, barWidth + 20, 25 + i * (barHeight + barSpacing));
             });
-            
-            // 显示结果
-            const resultHTML = `
-                <div style="margin-top: 20px; padding: 15px; background: ${score >= 4 ? '#d4edda' : '#fff3cd'}; 
-                            border-radius: 8px; border: 2px solid ${score >= 4 ? '#c3e6cb' : '#ffeaa7'}">
-                    <h4 style="color: ${score >= 4 ? '#155724' : '#856404'}">
-                        <i class="fas fa-${score >= 4 ? 'trophy' : 'award'}"></i>
-                        Quiz Result: ${score}/5 (${(score/5*100).toFixed(0)}%)
-                    </h4>
-                    <p>${score >= 4 ? 'Excellent! You know these words well.' : 
-                         score >= 3 ? 'Good job! Keep practicing.' : 
-                         'Keep studying! Try the flashcards mode.'}</p>
-                </div>
-            `;
-            
-            document.getElementById('quizContainer').insertAdjacentHTML('beforeend', resultHTML);
         }
         
-        // 20. 显示闪卡
-        function showFlashcards() {
-            const flashcardWords = [...filteredData].slice(0, 10);
-            
-            let flashcardHTML = `
-                <div style="margin-top: 20px;">
-                    <h4>Flashcards Mode (${flashcardWords.length} cards)</h4>
-                    <div style="display: flex; justify-content: center; margin: 20px 0;">
-                        <div id="flashcard" style="width: 300px; height: 200px; 
-                            perspective: 1000px; cursor: pointer;">
-                            <div id="flashcard-inner" style="width: 100%; height: 100%; 
-                                position: relative; transform-style: preserve-3d; 
-                                transition: transform 0.6s;">
-                                <!-- 卡片内容动态更新 -->
-                            </div>
-                        </div>
-                    </div>
-                    <div style="text-align: center; margin-top: 20px;">
-                        <button class="btn" id="prevCard" style="width: auto;">
-                            <i class="fas fa-arrow-left"></i> Previous
-                        </button>
-                        <span id="cardCounter" style="margin: 0 15px;">1/${flashcardWords.length}</span>
-                        <button class="btn" id="nextCard" style="width: auto;">
-                            Next <i class="fas fa-arrow-right"></i>
-                        </button>
-                    </div>
-                </div>
-            `;
-            
-            const quizContainer = document.getElementById('quizContainer');
-            quizContainer.innerHTML = flashcardHTML;
-            quizContainer.style.display = 'block';
-            
-            // 初始化闪卡
-            window.currentCardIndex = 0;
-            window.flashcardWords = flashcardWords;
-            updateFlashcard();
-            
-            // 添加事件监听器
-            document.getElementById('flashcard').addEventListener('click', flipCard);
-            document.getElementById('prevCard').addEventListener('click', () => changeCard(-1));
-            document.getElementById('nextCard').addEventListener('click', () => changeCard(1));
-        }
-        
-        // 21. 更新闪卡
-        function updateFlashcard() {
-            const word = window.flashcardWords[window.currentCardIndex];
-            const cardInner = document.getElementById('flashcard-inner');
-            const isFlipped = cardInner.style.transform === 'rotateY(180deg)';
-            
-            cardInner.innerHTML = `
-                <div style="position: absolute; width: 100%; height: 100%; 
-                    backface-visibility: hidden; background: white; 
-                    border: 2px solid var(--secondary); border-radius: 10px;
-                    display: flex; flex-direction: column; justify-content: center;
-                    align-items: center; padding: 20px;">
-                    <div style="font-size: 3rem; margin-bottom: 20px;">${word.hanzi}</div>
-                    <div style="color: #666; font-size: 0.9rem;">Click to flip</div>
-                </div>
-                <div style="position: absolute; width: 100%; height: 100%; 
-                    backface-visibility: hidden; background: var(--light); 
-                    border: 2px solid var(--secondary); border-radius: 10px;
-                    transform: rotateY(180deg); padding: 20px;">
-                    <h3 style="color: var(--primary); margin-bottom: 10px;">${word.english}</h3>
-                    <p><strong>Pinyin:</strong> ${word.pinyin}</p>
-                    <p><strong>Meaning:</strong> ${word.meaning_en}</p>
-                    <p><strong>Example:</strong> ${word.example}</p>
-                    <p style="margin-top: 15px; color: #666; font-size: 0.9rem;">Click to flip back</p>
-                </div>
-            `;
-            
-            // 保持翻转状态
-            if (isFlipped) {
-                cardInner.style.transform = 'rotateY(180deg)';
-            } else {
-                cardInner.style.transform = 'rotateY(0deg)';
-            }
-            
-            // 更新计数器
-            document.getElementById('cardCounter').textContent = 
-                `${window.currentCardIndex + 1}/${window.flashcardWords.length}`;
-        }
-        
-        // 22. 翻转卡片
-        function flipCard() {
-            const cardInner = document.getElementById('flashcard-inner');
-            cardInner.style.transform = cardInner.style.transform === 'rotateY(180deg)' 
-                ? 'rotateY(0deg)' 
-                : 'rotateY(180deg)';
-        }
-        
-        // 23. 切换卡片
-        function changeCard(direction) {
-            window.currentCardIndex += direction;
-            
-            if (window.currentCardIndex < 0) {
-                window.currentCardIndex = window.flashcardWords.length - 1;
-            } else if (window.currentCardIndex >= window.flashcardWords.length) {
-                window.currentCardIndex = 0;
-            }
-            
-            updateFlashcard();
-        }
-        
-        // 24. 创建学习计划
-        function createStudyPlan() {
-            const planHTML = `
-                <div style="margin-top: 20px;">
-                    <h4>Create Study Plan</h4>
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 20px;">
-                        <div style="background: #e8f4f8; padding: 20px; border-radius: 8px;">
-                            <h5><i class="fas fa-bolt" style="color: #3498db;"></i> Quick Start</h5>
-                            <p>Study 10 P1 words per day</p>
-                            <p>Complete in ${Math.ceil(500/10)} days</p>
-                            <button class="btn" onclick="startPlan('quick')" style="margin-top: 10px; width: 100%;">
-                                Start Plan
-                            </button>
-                        </div>
-                        
-                        <div style="background: #e8f6f3; padding: 20px; border-radius: 8px;">
-                            <h5><i class="fas fa-calendar-check" style="color: #27ae60;"></i> Standard Plan</h5>
-                            <p>Study 20 words per day (mix priorities)</p>
-                            <p>Complete in ${Math.ceil(1500/20)} days</p>
-                            <button class="btn" onclick="startPlan('standard')" style="margin-top: 10px; width: 100%;">
-                                Start Plan
-                            </button>
-                        </div>
-                        
-                        <div style="background: #fef9e7; padding: 20px; border-radius: 8px;">
-                            <h5><i class="fas fa-graduation-cap" style="color: #f39c12;"></i> Intensive Plan</h5>
-                            <p>Study 50 words per day</p>
-                            <p>Complete in ${Math.ceil(1500/50)} days</p>
-                            <button class="btn" onclick="startPlan('intensive')" style="margin-top: 10px; width: 100%;">
-                                Start Plan
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <div id="planProgress" style="margin-top: 30px; display: none;">
-                        <!-- 学习进度动态显示 -->
-                    </div>
-                </div>
-            `;
-            
-            const quizContainer = document.getElementById('quizContainer');
-            quizContainer.innerHTML = planHTML;
-            quizContainer.style.display = 'block';
-        }
-        
-        // 25. 开始学习计划
-        function startPlan(type) {
-            const plans = {
-                quick: { daily: 10, duration: Math.ceil(500/10) },
-                standard: { daily: 20, duration: Math.ceil(1500/20) },
-                intensive: { daily: 50, duration: Math.ceil(1500/50) }
+        // ============== 工具函数 ==============
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
             };
-            
-            const plan = plans[type];
-            
-            // 生成学习计划内容
-            const planContent = `
-                <div style="background: white; padding: 20px; border-radius: 8px; border: 2px solid var(--secondary); margin-top: 20px;">
-                    <h4 style="color: var(--primary);">
-                        <i class="fas fa-rocket"></i> ${type.charAt(0).toUpperCase() + type.slice(1)} Plan Started!
-                    </h4>
-                    <p><strong>Daily Goal:</strong> ${plan.daily} words</p>
-                    <p><strong>Total Duration:</strong> ${plan.duration} days</p>
-                    <p><strong>Start Date:</strong> ${new Date().toLocaleDateString()}</p>
-                    <p><strong>Expected Completion:</strong> ${new Date(Date.now() + plan.duration * 24 * 60 * 60 * 1000).toLocaleDateString()}</p>
-                    
-                    <div style="margin-top: 20px;">
-                        <h5>Today's Words (${plan.daily} words):</h5>
-                        <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px;">
-                            ${[...fullData].slice(0, plan.daily).map(word => `
-                                <div style="padding: 8px 12px; background: var(--light); border-radius: 6px; font-size: 0.9rem;">
-                                    ${word.hanzi} (${word.english})
-                                </div>
-                            `).join('')}
-                        </div>
-                    </div>
-                    
-                    <div style="margin-top: 20px;">
-                        <button class="btn" onclick="savePlan()">
-                            <i class="fas fa-save"></i> Save Plan
-                        </button>
-                        <button class="btn" onclick="sharePlan()" style="margin-left: 10px;">
-                            <i class="fas fa-share"></i> Share Plan
-                        </button>
-                    </div>
-                </div>
-            `;
-            
-            document.getElementById('planProgress').innerHTML = planContent;
-            document.getElementById('planProgress').style.display = 'block';
         }
         
-        // 26. 保存学习计划
-        function savePlan() {
-            showNotification('Study plan saved to your account!', 'success');
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
         }
         
-        // 27. 分享学习计划
-        function sharePlan() {
-            showNotification('Plan sharing feature coming soon!', 'info');
-        }
-        
-        // 28. 显示通知
-        function showNotification(message, type) {
-            // 移除现有通知
-            const existingNotification = document.querySelector('.notification');
-            if (existingNotification) {
-                existingNotification.remove();
-            }
+        function showLoading(message = "加载中...") {
+            const overlay = document.getElementById('loadingOverlay');
+            const loadingText = document.getElementById('loadingText');
             
-            // 创建新通知
-            const notification = document.createElement('div');
-            notification.className = `notification ${type}`;
-            notification.style.cssText = `
-                position: fixed;
-                top: 20px;
-                right: 20px;
-                padding: 15px 25px;
-                background: ${type === 'success' ? '#27ae60' : 
-                            type === 'error' ? '#e74c3c' : '#3498db'};
-                color: white;
-                border-radius: 8px;
-                box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-                z-index: 1000;
-                animation: slideIn 0.3s ease-out;
-            `;
-            
-            notification.innerHTML = `
-                <div style="display: flex; align-items: center; gap: 10px;">
-                    <i class="fas fa-${type === 'success' ? 'check-circle' : 
-                                     type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i>
-                    <span>${message}</span>
-                </div>
-            `;
-            
-            document.body.appendChild(notification);
-            
-            // 3秒后自动移除
-            setTimeout(() => {
-                notification.style.animation = 'slideOut 0.3s ease-in';
-                setTimeout(() => notification.remove(), 300);
-            }, 3000);
-            
-            // 添加动画关键帧
-            if (!document.querySelector('#notification-styles')) {
-                const style = document.createElement('style');
-                style.id = 'notification-styles';
-                style.textContent = `
-                    @keyframes slideIn {
-                        from { transform: translateX(100%); opacity: 0; }
-                        to { transform: translateX(0); opacity: 1; }
-                    }
-                    @keyframes slideOut {
-                        from { transform: translateX(0); opacity: 1; }
-                        to { transform: translateX(100%); opacity: 0; }
-                    }
-                `;
-                document.head.appendChild(style);
+            if (overlay && loadingText) {
+                loadingText.textContent = message;
+                overlay.style.display = 'flex';
             }
         }
         
-        // 29. 键盘快捷键
-        document.addEventListener('keydown', function(e) {
-            // Ctrl+F 聚焦搜索框
-            if ((e.ctrlKey || e.metaKey) && e.key === 'f') {
-                e.preventDefault();
-                document.getElementById('searchInput').focus();
+        function hideLoading() {
+            const overlay = document.getElementById('loadingOverlay');
+            if (overlay) {
+                overlay.style.display = 'none';
+            }
+        }
+        
+        function showError(message) {
+            const errorDiv = document.getElementById('errorMessage');
+            if (errorDiv) {
+                errorDiv.textContent = message;
+                errorDiv.style.display = 'block';
+                
+                // 3秒后自动隐藏
+                setTimeout(() => {
+                    errorDiv.style.display = 'none';
+                }, 3000);
             }
             
-            // ESC 清除搜索
-            if (e.key === 'Escape') {
-                document.getElementById('searchInput').value = '';
-                handleSearch();
-            }
-        });
+            console.error(message);
+        }
         
-        // 30. 窗口大小调整响应
-        window.addEventListener('resize', function() {
-            // 在小屏幕上自动切换到卡片视图
-            if (window.innerWidth < 768 && currentView === 'table') {
-                document.getElementById('viewMode').value = 'cards';
-                currentView = 'cards';
-                updateDisplay();
+        function showSuccess(message) {
+            const successDiv = document.getElementById('successMessage');
+            if (successDiv) {
+                successDiv.textContent = message;
+                successDiv.style.display = 'block';
+                
+                // 3秒后自动隐藏
+                setTimeout(() => {
+                    successDiv.style.display = 'none';
+                }, 3000);
             }
-        });
+        }
+        
+        // ============== 示例数据（备用） ==============
+        function getSampleData() {
+            console.log("使用示例数据...");
+            return {
+                metadata: {
+                    name: "Sinographic Integration Lexicon - 示例数据",
+                    version: "1.0",
+                    total_words: 100,
+                    unique_hanzi: 80,
+                    created: new Date().toISOString()
+                },
+                lexicon: [
+                    {id: 1, english: "the", hanzi: "(保留)", pinyin: "", pos: "art", category: "Relations/Functions", priority: 1, logic: "T0"},
+                    {id: 2, english: "be", hanzi: "为", pinyin: "wéi", pos: "v", category: "Actions/Changes", priority: 1, logic: "T2"},
+                    {id: 3, english: "to", hanzi: "(保留)", pinyin: "", pos: "prep", category: "Relations/Functions", priority: 1, logic: "T0"},
+                    {id: 4, english: "of", hanzi: "之", pinyin: "zhī", pos: "prep", category: "Relations/Functions", priority: 1, logic: "T2"},
+                    {id: 5, english: "and", hanzi: "和", pinyin: "hé", pos: "conj", category: "Relations/Functions", priority: 1, logic: "T1"},
+                    {id: 6, english: "sun", hanzi: "日", pinyin: "rì", pos: "n", category: "Nature/Existence", priority: 1, logic: "T1"},
+                    {id: 7, english: "moon", hanzi: "月", pinyin: "yuè", pos: "n", category: "Nature/Existence", priority: 1, logic: "T1"},
+                    {id: 8, english: "water", hanzi: "水", pinyin: "shuǐ", pos: "n", category: "Nature/Existence", priority: 1, logic: "T1"},
+                    {id: 9, english: "fire", hanzi: "火", pinyin: "huǒ", pos: "n", category: "Nature/Existence", priority: 1, logic: "T1"},
+                    {id: 10, english: "person", hanzi: "人", pinyin: "rén", pos: "n", category: "People/Society", priority: 1, logic: "T1"},
+                    {id: 11, english: "love", hanzi: "爱", pinyin: "ài", pos: "v", category: "Actions/Changes", priority: 1, logic: "T1"},
+                    {id: 12, english: "see", hanzi: "见", pinyin: "jiàn", pos: "v", category: "Actions/Changes", priority: 1, logic: "T1"},
+                    {id: 13, english: "big", hanzi: "大", pinyin: "dà", pos: "adj", category: "Qualities/Degree", priority: 1, logic: "T1"},
+                    {id: 14, english: "small", hanzi: "小", pinyin: "xiǎo", pos: "adj", category: "Qualities/Degree", priority: 1, logic: "T1"},
+                    {id: 15, english: "good", hanzi: "好", pinyin: "hǎo", pos: "adj", category: "Qualities/Degree", priority: 1, logic: "T1"}
+                ]
+            };
+        }
     </script>
 </body>
 </html>
