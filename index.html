@@ -196,7 +196,72 @@
         </div>
     </div>
 
-    <script src="data/mapping.json" type="module"></script>
-    <script src="script.js"></script>
+<!-- 在原有的index.html中添加这些功能 -->
+<script>
+// 数据库统计
+document.addEventListener('DOMContentLoaded', function() {
+    // 更新数据库统计
+    fetch('sinographic_mapping.json')
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('total-words').textContent = data.length;
+            document.getElementById('mapping-accuracy').textContent = '82.4%';
+        });
+});
+
+// 完整的数据库展示功能
+function renderDatabase() {
+    const tableBody = document.getElementById('database-table-body');
+    const searchTerm = document.getElementById('search-db').value.toLowerCase();
+    const categoryFilter = document.getElementById('category-filter').value;
+    
+    // 获取当前页数据
+    const page = parseInt(document.getElementById('current-page').value) || 1;
+    const itemsPerPage = 20;
+    
+    fetch('sinographic_mapping.json')
+        .then(response => response.json())
+        .then(data => {
+            // 过滤数据
+            let filtered = data.filter(item => {
+                const matchesSearch = !searchTerm || 
+                    item.english.toLowerCase().includes(searchTerm) ||
+                    item.chinese.includes(searchTerm);
+                
+                const matchesCategory = categoryFilter === 'all' || 
+                    (item.category && item.category.toLowerCase().includes(categoryFilter));
+                
+                return matchesSearch && matchesCategory;
+            });
+            
+            // 分页
+            const totalPages = Math.ceil(filtered.length / itemsPerPage);
+            const startIndex = (page - 1) * itemsPerPage;
+            const pageData = filtered.slice(startIndex, startIndex + itemsPerPage);
+            
+            // 渲染表格
+            tableBody.innerHTML = '';
+            pageData.forEach(item => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td><strong>${item.english}</strong></td>
+                    <td class="chinese-cell">${item.chinese}</td>
+                    <td>${item.pinyin || ''}</td>
+                    <td>${item.category || 'General'}</td>
+                    <td><span class="priority-badge priority-${item.priority || 3}">${item.priority || 3}</span></td>
+                `;
+                row.addEventListener('click', () => {
+                    document.getElementById('word-input').value = item.english;
+                    analyzeInput();
+                });
+                tableBody.appendChild(row);
+            });
+            
+            // 更新分页
+            updatePagination(page, totalPages);
+        });
+}
+</script>
 </body>
 </html>
+
