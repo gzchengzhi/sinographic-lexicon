@@ -1,0 +1,191 @@
+[
+  {
+    "english": "photography",
+    "chinese": "摄影",
+    "pinyin": "shè yǐng",
+    "category": "Modern/Abstract",
+    "priority": 3
+  },
+  {
+    "english": "democracy",
+    "chinese": "民主",
+    "pinyin": "mín zhǔ",
+    "category": "Modern/Abstract",
+    "priority": 3
+  },
+  {
+    "english": "biology",
+    "chinese": "生物学",
+    "pinyin": "shēng wù xué",
+    "category": "Modern/Abstract",
+    "priority": 4
+  },
+  {
+    "english": "beautiful",
+    "chinese": "美",
+    "pinyin": "měi",
+    "category": "Qualities/Degree",
+    "priority": 2
+  },
+  {
+    "english": "computer",
+    "chinese": "电脑",
+    "pinyin": "diàn nǎo",
+    "category": "Modern/Abstract",
+    "priority": 1
+  },
+  {
+    "english": "international",
+    "chinese": "国际",
+    "pinyin": "guó jì",
+    "category": "Modern/Abstract",
+    "priority": 3
+  },
+  {
+    "english": "revolution",
+    "chinese": "革命",
+    "pinyin": "gé mìng",
+    "category": "Modern/Abstract",
+    "priority": 3
+  },
+  {
+    "english": "unhappiness",
+    "chinese": "不乐",
+    "pinyin": "bù lè",
+    "category": "Qualities/Degree",
+    "priority": 3
+  },
+  {
+    "english": "telephone",
+    "chinese": "电话",
+    "pinyin": "diàn huà",
+    "category": "Modern/Abstract",
+    "priority": 2
+  },
+  {
+    "english": "geography",
+    "chinese": "地理学",
+    "pinyin": "dì lǐ xué",
+    "category": "Modern/Abstract",
+    "priority": 4
+  },
+  {
+    "english": "psychology",
+    "chinese": "心理学",
+    "pinyin": "xīn lǐ xué",
+    "category": "Modern/Abstract",
+    "priority": 4
+  },
+  {
+    "english": "thermometer",
+    "chinese": "温度计",
+    "pinyin": "wēn dù jì",
+    "category": "Modern/Abstract",
+    "priority": 4
+  },
+  {
+    "english": "see",
+    "chinese": "见",
+    "pinyin": "jiàn",
+    "category": "Actions/Changes",
+    "priority": 1
+  },
+  {
+    "english": "know",
+    "chinese": "知",
+    "pinyin": "zhī",
+    "category": "Actions/Changes",
+    "priority": 1
+  },
+  {
+    "english": "run",
+    "chinese": "跑",
+    "pinyin": "pǎo",
+    "category": "Actions/Changes",
+    "priority": 1
+  },
+  {
+    "english": "walk",
+    "chinese": "行",
+    "pinyin": "xíng",
+    "category": "Actions/Changes",
+    "priority": 1
+  },
+  {
+    "english": "big",
+    "chinese": "大",
+    "pinyin": "dà",
+    "category": "Qualities/Degree",
+    "priority": 1
+  },
+  {
+    "english": "small",
+    "chinese": "小",
+    "pinyin": "xiǎo",
+    "category": "Qualities/Degree",
+    "priority": 1
+  },
+  {
+    "english": "happy",
+    "chinese": "喜",
+    "pinyin": "xǐ",
+    "category": "Qualities/Degree",
+    "priority": 2
+  },
+  {
+    "english": "sad",
+    "chinese": "悲",
+    "pinyin": "bēi",
+    "category": "Qualities/Degree",
+    "priority": 2
+  },
+  {
+    "english": "water",
+    "chinese": "水",
+    "pinyin": "shuǐ",
+    "category": "Nature/Existence",
+    "priority": 1
+  },
+  {
+    "english": "fire",
+    "chinese": "火",
+    "pinyin": "huǒ",
+    "category": "Nature/Existence",
+    "priority": 1
+  },
+  {
+    "english": "earth",
+    "chinese": "土",
+    "pinyin": "tǔ",
+    "category": "Nature/Existence",
+    "priority": 1
+  },
+  {
+    "english": "air",
+    "chinese": "气",
+    "pinyin": "qì",
+    "category": "Nature/Existence",
+    "priority": 1
+  },
+  {
+    "english": "sun",
+    "chinese": "日",
+    "pinyin": "rì",
+    "category": "Nature/Existence",
+    "priority": 1
+  },
+  {
+    "english": "moon",
+    "chinese": "月",
+    "pinyin": "yuè",
+    "category": "Nature/Existence",
+    "priority": 1
+  },
+  {
+    "english": "star",
+    "chinese": "星",
+    "pinyin": "xīng",
+    "category": "Nature/Existence",
+    "priority": 1
+  }
+]
