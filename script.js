@@ -1,5 +1,76 @@
 // Sinographic Integration - Main JavaScript File
 
+// 在script.js开头添加
+let WORD_DATABASE = [];
+
+async function loadDatabase() {
+    try {
+        // 尝试从不同位置加载JSON
+        const possiblePaths = [
+            'data/mapping.json',
+            'mapping.json',
+            'sinographic_mapping.json',
+            './data/mapping.json',
+            './mapping.json'
+        ];
+        
+        let response = null;
+        for (const path of possiblePaths) {
+            try {
+                response = await fetch(path);
+                if (response.ok) break;
+            } catch (e) {
+                console.log(`尝试路径 ${path} 失败`);
+            }
+        }
+        
+        if (response && response.ok) {
+            WORD_DATABASE = await response.json();
+            console.log(`成功加载 ${WORD_DATABASE.length} 个单词映射`);
+            
+            // 初始化应用
+            initializeApp();
+        } else {
+            throw new Error('无法加载数据库文件');
+        }
+    } catch (error) {
+        console.error('加载数据库失败:', error);
+        
+        // 使用内置的备用数据
+        loadFallbackData();
+        initializeApp();
+    }
+}
+
+// 备用数据
+function loadFallbackData() {
+    WORD_DATABASE = [
+        {
+            "english": "the",
+            "chinese": "(保留)",
+            "pinyin": "",
+            "pos": "art",
+            "category": "Relations/Functions",
+            "priority": 1
+        },
+        {
+            "english": "be",
+            "chinese": "为",
+            "pinyin": "wéi",
+            "pos": "v",
+            "category": "Actions/Changes",
+            "priority": 1
+        },
+        // 更多备用数据...
+    ];
+    console.log(`使用备用数据，共 ${WORD_DATABASE.length} 个单词`);
+}
+
+// 修改原有的DOMContentLoaded事件
+document.addEventListener('DOMContentLoaded', function() {
+    // 开始加载数据库
+    loadDatabase();
+});
 // Configuration
 const CONFIG = {
     itemsPerPage: 10,
